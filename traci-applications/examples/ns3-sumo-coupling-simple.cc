@@ -39,7 +39,11 @@ main (int argc, char *argv[])
 
   /*** 2. Create and setup channel ***/
   std::string phyMode ("OfdmRate6MbpsBW10MHz");
-  YansWifiPhyHelper wifiPhy = YansWifiPhyHelper::Default ();
+  // YansWifiPhyHelper wifiPhy = YansWifiPhyHelper::Default (); 
+  //this Default function is removed in ns3 3.36, change it into the following two lines
+  YansWifiPhyHelper wifiPhy;
+  wifiPhy.SetErrorRateModel("ns3::NistErrorRateModel");
+
   wifiPhy.Set ("TxPowerStart", DoubleValue (20));
   wifiPhy.Set ("TxPowerEnd", DoubleValue (20));
   YansWifiChannelHelper wifiChannel = YansWifiChannelHelper::Default ();
@@ -79,7 +83,8 @@ main (int argc, char *argv[])
   sumoClient->SetAttribute ("SumoBinaryPath", StringValue (""));    // use system installation of sumo
   sumoClient->SetAttribute ("SynchInterval", TimeValue (Seconds (0.1)));
   sumoClient->SetAttribute ("StartTime", TimeValue (Seconds (0.0)));
-  sumoClient->SetAttribute ("SumoGUI", BooleanValue (false));
+  // sumoClient->SetAttribute ("SumoGUI", BooleanValue (false));
+  sumoClient->SetAttribute ("SumoGUI", BooleanValue (true));
   sumoClient->SetAttribute ("SumoPort", UintegerValue (3400));
   sumoClient->SetAttribute ("PenetrationRate", DoubleValue (1.0));  // portion of vehicles equipped with wifi
   sumoClient->SetAttribute ("SumoLogFile", BooleanValue (true));
